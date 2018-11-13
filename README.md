@@ -1,2 +1,12 @@
 # sil-da2i-td-rappels-web
 Projet web SensCritik
+
+# v0.1
+- Mise en place du projet
+- Création des fichiers principaux (index, actor, director, movie)
+- Connexion à la base de données
+- Instanciation automatique des classes principales
+- Mise en place total du TP1
+
+# v0.2
+- Amélioration de l'architecture : création de classes
