@@ -51,10 +51,7 @@ main {
 }
 
 .sectionHeader {
-	background: linear-gradient(to left, transparent, black), url("http://lukedowding.com/wp-content/uploads/BR2049-Wallpaper-Driving.png");
 	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
 	height: 18vw;
 }
 
