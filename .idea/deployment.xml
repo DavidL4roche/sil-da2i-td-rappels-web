@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="ftp-davidlaroche.alwaysdata.net">
+  <component name="PublishConfigData" autoUpload="Always" serverName="ftp-davidlaroche.alwaysdata.net">
     <serverData>
       <paths name="ftp-davidlaroche.alwaysdata.net">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/www/SensCritik" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
