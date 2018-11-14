@@ -1,7 +1,12 @@
 <?php
-    require '../prefabs/config.php';
+    require '../config/functions.php';
+    require_once  'Movie.php';
 
     $idMovie = filter_input(INPUT_GET, 'id');
+
+    $movie = Movie::getBaseInfos($idMovie);
+
+    /*
     $movieQuery = $database->prepare('SELECT * 
                                                  FROM movie, movieHasPicture, picture
                                                  WHERE movie.id = ?
@@ -10,6 +15,7 @@
                                                  AND movieHasPicture.type = "gallery"');
     $movieQuery->execute(array($idMovie));
     $movie = $movieQuery->fetch();
+    */
 
     $directorQuery = $database->prepare('SELECT * 
                                                     FROM movieHasPerson, person
@@ -35,36 +41,36 @@
 <!DOCTYPE html>
 <html>
 <?php
-    getBlock('head');
+    getBlock('prefabs/head');
 ?>
 
 <body>
 
     <?php
-        getBlock('header');
-        getBlock('bannerMovie', $movie);
+        getBlock('prefabs/header');
+        getBlock('prefabs/bannerMovie', $movie);
     ?>
 
 	<main>
 		<section>
 			<article>
-				<p class="desc1">Film de <a class="presDirector" href="../director/infoDirector.php?id=<?= $director['idPerson'] ?>"><?= $director['firstname'] . ' '
-                         . $director['lastname']?></a> - <?= date('d/m/Y', strtotime($movie['releaseDate']))?></p>
+				<p class="desc1">Film de <a class="presDirector" href="../person/infoDirector.php?id=<?= $director['idPerson'] ?>"><?= $director['firstname'] . ' '
+                         . $director['lastname']?></a> - <?= date('d/m/Y', strtotime($movie->getReleaseDate()))?></p>
 				<p>Avec
                     <?php
                         while ($actor = $actorQuery->fetch()) {
                             ?>
-                            <a class="presActor" href="../actor/infoActor.php?id=<?= $actor['idPerson'] ?>"><?= $actor['firstname'] . ' ' . $actor['lastname'] ?></a>,
+                            <a class="presActor" href="../person/infoActor.php?id=<?= $actor['idPerson'] ?>"><?= $actor['firstname'] . ' ' . $actor['lastname'] ?></a>,
                             <?php
                         }
                     ?>
                 </p>
 			</article>
-			
+
 			<article>
-				<p><?= $movie['synopsis'] ?></p>
+				<p><?= $movie->getSynopsis() ?></p>
 			</article>
-			
+
 			<article class="profils">
 				<h2>Réalisateur</h2>
 
@@ -80,14 +86,14 @@
                 $real = $realQuery->fetch()
                 ?>
                 <figure>
-                    <a href="<?php echo '../director/infoDirector.php?id=' . $real['idPerson'] ?>">
+                    <a href="<?php echo '../person/infoDirector.php?id=' . $real['idPerson'] ?>">
                         <figcaption><?php echo $real['firstname'] . ' ' . $real['lastname']?></figcaption>
                         <img src="<?php echo $real['path']; ?>" alt="" />
                     </a>
                 </figure>
                 <?php
                 ?>
-				
+
 				<h2>Casting : Acteurs principaux</h2>
                 <?php
                 $actorsQuery = $database->prepare('SELECT *
@@ -101,7 +107,7 @@
                 while ($actor = $actorsQuery->fetch()) {
                     ?>
                     <figure>
-                        <a href="<?php echo '../actor/infoActor.php?id=' . $actor['idPerson'] ?>">
+                        <a href="<?php echo '../person/infoActor.php?id=' . $actor['idPerson'] ?>">
                             <figcaption><?php echo $actor['firstname'] . ' ' . $actor['lastname']?></figcaption>
                             <img src="<?php echo $actor['path']; ?>" alt="" />
                         </a>
@@ -110,8 +116,8 @@
                 }
                 ?>
 			</article>
-			 
-			<!-- 
+
+			<!--
 			<aside>
 				<h2>Note</h2>
 				<p>3.7/5</p>
@@ -119,9 +125,9 @@
 		               low="1" high="4" optimum="3.5" value="3.7">
 		            at 3.7/5
 		        </meter>
-			</aside> 
+			</aside>
 			-->
-			
+
 			<aside class="imagesFilm">
 				<h2>Images</h2>
                 <?php
@@ -137,12 +143,12 @@
                     <?php
                 }
                 ?>
-			</aside> 			
+			</aside>
 		</section>
 	</main>
 	
     <?php
-        getBlock('footer');
+        getBlock('prefabs/footer');
     ?>
 
 </body>

@@ -1,18 +1,18 @@
 <?php
-require '../prefabs/config.php';
+require '../config/functions.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <?php
-    getBlock('head');
+    getBlock('prefabs/head');
     ?>
 </head>
 <body>
 
 <?php
-getBlock('header');
+getBlock('prefabs/header');
 
 $idActor = filter_input(INPUT_GET, 'id');
 $actorQuery = $database->prepare('SELECT * 
@@ -31,19 +31,20 @@ $actor = $actorQuery->fetch();
                                                  FROM person, movieHasPerson, movie 
                                                  WHERE person.id = ?
                                                  AND person.id = movieHasPerson.idPerson 
-                                                 AND movieHasPerson.idMovie = movie.id');
+                                                 AND movieHasPerson.idMovie = movie.id
+                                                 ORDER BY movie.releaseDate');
         $moviesQuery->execute(array($idActor));
 
         $data = array($actor, $moviesQuery);
 
-        getBlock('descActor', $data);
+        getBlock('prefabs/descActor', $data);
         ?>
 
     </section>
 </main>
 
 <?php
-getBlock('footer');
+getBlock('prefabs/footer');
 ?>
 
 </body>

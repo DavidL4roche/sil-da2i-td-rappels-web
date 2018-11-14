@@ -1,35 +1,33 @@
 <?php
-require '../prefabs/config.php';
+    require '../config/functions.php';
+    require_once 'Movie.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <?php
-    getBlock('head');
+    getBlock('prefabs/head');
     ?>
 </head>
 <body>
 
 <?php
-getBlock('header');
+getBlock('prefabs/header');
 ?>
 
 <main>
     <section>
         <h2>Liste des films</h2>
+
         <?php
-        $moviesQuery = $database->prepare('SELECT *
-                                                      FROM movie, movieHasPicture, picture
-                                                      WHERE movie.id = movieHasPicture.idMovie
-                                                      AND movieHasPicture.type = "gallery"
-                                                      AND movieHasPicture.idPicture = picture.id');
-        $moviesQuery->execute();
-        while ($movie = $moviesQuery->fetch()) {
+        foreach (Movie::getAllMovies() as $movie) {
             ?>
-            <li>
-                <a href="<?php echo 'infoMovie.php?id=' . $movie['idMovie'] ?>"><?php echo $movie['title']?></a>
-            </li>
+            <a class="movieListA" href="<?= 'infoMovie.php?id=' . $movie->getId() ?>">
+                <li class="movieList">
+                    <?= $movie->getTitle()?>
+                </li>
+            </a>
             <?php
         }
         ?>
@@ -37,7 +35,7 @@ getBlock('header');
 </main>
 
 <?php
-getBlock('footer');
+getBlock('prefabs/footer');
 ?>
 
 </body>
