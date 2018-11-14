@@ -45,20 +45,24 @@ header a {
 	padding-right: 5px;
 }
 
-main {
+main, .articleActorCorps {
 	width: 60%;
 	margin: auto;
+}
+
+main {
+	margin-bottom: 15px;
+}
+
+.sectionHeader {
+	background-repeat: no-repeat;
+	min-height: 18vw;
 }
 
 .sectionHeader h1 {
 	font-size: 60px;
 	margin-bottom: 20px;
 	margin-top: 0;
-}
-
-.sectionHeader {
-	background-repeat: no-repeat;
-	height: 18vw;
 }
 
 .texteTopHeader {
@@ -82,15 +86,14 @@ main {
 .texteBackHeader {
 	width: 60%;
 	margin: auto;
-	position: relative;
+	padding-bottom: 10px;
+	text-align: right;
 }
 
 .note {
 	margin: 0;
 	font-size: 3vw;
 	color: white;
-	position: absolute;
-	right: 0;
 }
 
 .background {
@@ -167,6 +170,40 @@ main {
 .movieListA {
 	text-decoration: none;
 	color: black;
+}
+
+.articleActor {
+	width: 100%;
+	background-color: #20222C;
+	color: white;
+}
+
+.articleActorCorps {
+	padding: 15px;
+	height: 100%;
+	line-height: 16px;
+}
+
+.articleActorCorps img {
+	border: 2px solid rgba(255,255,255,.15);
+	margin-right: 30px;
+	border-radius: 5px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.articleActorCorps h1 {
+	font-size: 56px;
+	margin-top: 0;
+	margin-bottom: 40px;
+}
+
+.articleActorText {
+	display: inline-block;
+	vertical-align: text-top;
+	font-size: 13px;
+	line-height: 16px;
+	top: 0;
 }
 
 footer {
