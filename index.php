@@ -22,7 +22,7 @@
         <nav>
             <ul>
                 <li><a href="<?= ROOTURL ?>/movie/infoMovie.php?id=1">Films</a></li>
-                <li><a href="<?= ROOTURL ?>/person/actor.php">Acteurs</a></li>
+                <li><a href="<?= ROOTURL ?>/person/actors.php">Acteurs</a></li>
                 <li><a href="<?= ROOTURL ?>/person/director.php">Directeurs</a></li>
             </ul>
         </nav>
