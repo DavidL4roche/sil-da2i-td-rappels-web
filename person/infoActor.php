@@ -24,21 +24,24 @@ require '../config/functions.php';
     $actor = $actorQuery->fetch();
 ?>
 
+<main>
+    <section>
+        <?php
+        $moviesQuery = $database->prepare('SELECT * 
+                                                 FROM person, movieHasPerson, movie 
+                                                 WHERE person.id = ?
+                                                 AND person.id = movieHasPerson.idPerson 
+                                                 AND movieHasPerson.idMovie = movie.id
+                                                 ORDER BY movie.releaseDate');
+        $moviesQuery->execute(array($idActor));
 
-<?php
-$moviesQuery = $database->prepare('SELECT * 
-                                         FROM person, movieHasPerson, movie 
-                                         WHERE person.id = ?
-                                         AND person.id = movieHasPerson.idPerson 
-                                         AND movieHasPerson.idMovie = movie.id
-                                         ORDER BY movie.releaseDate');
-$moviesQuery->execute(array($idActor));
+        $data = array($actor, $moviesQuery);
 
-$data = array($actor, $moviesQuery);
+            getBlock('prefabs/descActor', $data);
+        ?>
 
-    getBlock('prefabs/descActor', $data);
-?>
-
+    </section>
+</main>
 
 <?php
     getBlock('prefabs/footer');

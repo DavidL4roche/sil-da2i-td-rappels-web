@@ -1,45 +1,28 @@
 <?php
-    require '../config/functions.php';
-    require_once 'Actor.php';
-?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <?php
-        getBlock('prefabs/head');
-    ?>
-</head>
-<body>
+require_once 'Person.php';
 
-    <?php
-        getBlock('prefabs/header');
-    ?>
-	
-	<main>
-        <section>
-            <article class="profils">
-                <h2>Liste des acteurs</h2>
+class Actor extends Person {
 
-                <?php
-                foreach (Actor::getAllActors() as $actor) {
-                    ?>
-                    <figure>
-                        <a href="<?= 'infoActor.php?id=' . $actor->getId() ?>">
-                            <figcaption><?= $actor->getFirstname() . ' ' . $actor->getLastname()?></figcaption>
-                            <img src="<?= $actor->getPath() ?>" alt="" />
-                        </a>
-                    </figure>
-                    <?php
-                }
-                ?>
-            </article>
-        </section>
-	</main>
+    // Renvoie tout les acteurs
+    public static function getAllActors() {
 
-    <?php
-        getBlock('prefabs/footer');
-    ?>
-	
-</body>
-</html>
+        // Accès à la BD
+        require_once ROOTPATH . '/config/functions.php';
+
+        // Tableau des acteurs
+        $actors = array();
+
+        $realQuery = getDatabase()->prepare('SELECT DISTINCT movieHasPerson.idPerson, person.firstname, person.lastname, picture.path, person.birthDate, person.biography
+                                         FROM person, movieHasPerson, personHasPicture, picture
+                                         WHERE person.id = movieHasPerson.idPerson
+                                         AND movieHasPerson.role = "actor"
+                                         AND person.id = personHasPicture.idPerson
+                                         AND personHasPicture.idPicture = picture.id');
+        $realQuery->execute();
+        while ($real = $realQuery->fetch()) {
+            array_push($actors, new Actor($real['idPerson'], $real['lastname'], $real['firstname'], $real['birthDate'], $real['biography'], $real['path']));
+        }
+        return $actors;
+    }
+}

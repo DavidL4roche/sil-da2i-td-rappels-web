@@ -1,42 +1,96 @@
 <?php
-    require '../config/functions.php';
-    require_once 'Movie.php';
-?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <?php
-    getBlock('prefabs/head');
-    ?>
-</head>
-<body>
+class Movie {
 
-<?php
-getBlock('prefabs/header');
-?>
+    private $id;
+    private $title;
+    private $releaseDate;
+    private $synopsis;
+    private $rating;
+    private $path;
 
-<main>
-    <section>
-        <h2>Liste des films</h2>
+    // Constructor
+    public function __construct($id, $title, $releaseDate, $synopsis, $rating, $path)
+    {
+        $this->id = $id;
+        $this->title = $title;
+        $this->releaseDate = $releaseDate;
+        $this->synopsis = $synopsis;
+        $this->rating = $rating;
+        $this->path = $path;
+    }
 
-        <?php
-        foreach (Movie::getAllMovies() as $movie) {
-            ?>
-            <a class="movieListA" href="<?= 'infoMovie.php?id=' . $movie->getId() ?>">
-                <li class="movieList">
-                    <?= $movie->getTitle()?>
-                </li>
-            </a>
-            <?php
+    // Getters
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function getReleaseDate()
+    {
+        return $this->releaseDate;
+    }
+
+    public function getSynopsis()
+    {
+        return $this->synopsis;
+    }
+
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    // Functions
+    public static function getAllMovies() {
+
+        // Accès à la BD
+        require_once ROOTPATH . '/config/functions.php';
+
+        // Tableau des films
+        $movies = array();
+
+        $realQuery = getDatabase()->prepare('SELECT * FROM movie');
+        $realQuery->execute();
+        while ($real = $realQuery->fetch()) {
+            array_push($movies, new Movie($real['id'], $real['title'], $real['releaseDate'], $real['synopsis'], $real['rating'], null));
         }
-        ?>
-    </section>
-</main>
+        return $movies;
+    }
 
-<?php
-getBlock('prefabs/footer');
-?>
+    public static function getBaseInfos($id) {
 
-</body>
-</html>
+        // Accès à la BD
+        require_once ROOTPATH . '/config/functions.php';
+
+        $realQuery = getDatabase()->prepare('SELECT idMovie, title, releaseDate, synopsis, rating, path
+                                                        FROM movie, movieHasPicture, picture
+                                                        WHERE movie.id = movieHasPicture.idMovie
+                                                        AND movieHasPicture.idPicture = picture.id
+                                                        AND movieHasPicture.type = "gallery" 
+                                                        AND movie.id='.$id);
+        $realQuery->execute();
+        $real = $realQuery->fetch();
+
+        // Film
+        $movie = new Movie($real['idMovie'], $real['title'], $real['releaseDate'], $real['synopsis'], $real['rating'], $real['path']);
+
+        return $movie;
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle() . $this->getSynopsis() . $this->getId() . $this->getPath();
+    }
+
+
+}

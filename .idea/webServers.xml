@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="047c84b8-1c8b-4df8-8d88-811ce4ed03c0" name="ftp-davidlaroche.alwaysdata.net" url="http://davidlaroche.alwaysdata.net">
+      <webServer id="5e486ac0-54da-4ce2-aeb7-d0de91d111ea" name="alwaysdata" url="http://ftp-davidlaroche.alwaysdata.net">
         <fileTransfer host="ftp-davidlaroche.alwaysdata.net" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
