@@ -21,9 +21,9 @@
         <a href="<?= ROOTURL ?>/index.php"><h1>SensCritik</h1></a>
         <nav>
             <ul>
-                <li><a href="<?= ROOTURL ?>/movie/infoMovie.php?id=1">Films</a></li>
+                <li><a href="<?= ROOTURL ?>/movie/movies.php">Films</a></li>
                 <li><a href="<?= ROOTURL ?>/person/actors.php">Acteurs</a></li>
-                <li><a href="<?= ROOTURL ?>/person/director.php">Directeurs</a></li>
+                <li><a href="<?= ROOTURL ?>/person/directors.php">Directeurs</a></li>
             </ul>
         </nav>
     </header>
