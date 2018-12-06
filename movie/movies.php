@@ -19,17 +19,20 @@ getBlock('prefabs/header');
 
 <main>
     <section>
-        <article>
+        <article class="profilsMovies">
             <h2>Liste des films</h2>
 
             <?php
             foreach (Movie::getAllMovies() as $movie) {
                 ?>
-                <a class="movieListA" href="<?= 'infoMovie.php?id=' . $movie->getId() ?>">
-                    <li class="movieList">
-                        <?= $movie->getTitle()?>
-                    </li>
-                </a>
+                <figure>
+                    <a href="<?= 'infoMovie.php?id=' . $movie->getId() ?>">
+                        <?php
+                        $path = Movie::getPoster($movie->getId());
+                        ?>
+                        <img src="<?= $path ?>" alt="" />
+                    </a>
+                </figure>
                 <?php
             }
             ?>

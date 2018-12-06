@@ -1,13 +1,14 @@
 <?php
 require '../config/functions.php';
+require_once 'actor.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<?php
-    getBlock('prefabs/head');
-?>
+    <?php
+        getBlock('prefabs/head');
+    ?>
 </head>
 <body>
 
@@ -15,13 +16,8 @@ require '../config/functions.php';
     getBlock('prefabs/header');
 
     $idActor = filter_input(INPUT_GET, 'id');
-    $actorQuery = $database->prepare('SELECT * 
-                                                 FROM person, personHasPicture, picture 
-                                                 WHERE person.id = ?
-                                                 AND person.id = personHasPicture.idPerson 
-                                                 AND personHasPicture.idPicture = picture.id');
-    $actorQuery->execute(array($idActor));
-    $actor = $actorQuery->fetch();
+
+    $actor = Actor::getActorById($idActor);
 ?>
 
 <main>
@@ -37,7 +33,7 @@ require '../config/functions.php';
 
         $data = array($actor, $moviesQuery);
 
-            getBlock('prefabs/descActor', $data);
+            getBlock('prefabs/descPerson', $data);
         ?>
 
     </section>

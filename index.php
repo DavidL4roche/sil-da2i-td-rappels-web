@@ -1,8 +1,8 @@
 <?php
     require_once 'config/functions.php';
-    require 'movie/Movie.php';
-    require 'person/Director.php';
-    require 'person/Actor.php';
+    require_once 'movie/movie.php';
+    require_once 'person/director.php';
+    require_once 'person/actor.php';
 ?>
 
 <!DOCTYPE html>
@@ -35,33 +35,36 @@
                 <p>SensCritik est un service gratuit qui vous permet de découvrir, noter et classer des films.</p>
 			</article>
 
-            <article>
+            <article class="profilsMovies">
                 <h2>Liste des films</h2>
 
                 <?php
                 foreach (Movie::getAllMovies() as $movie) {
                     ?>
-                    <a class="movieListA" href="<?= 'movie/infoMovie.php?id=' . $movie->getId() ?>">
-                        <li class="movieList">
-                            <?= $movie->getTitle()?>
-                        </li>
-                    </a>
+                    <figure>
+                        <a href="<?= 'movie/infoMovie.php?id=' . $movie->getId() ?>">
+                            <?php
+                                $path = Movie::getPoster($movie->getId());
+                            ?>
+                            <img src="<?= $path ?>" alt="" />
+                        </a>
+                    </figure>
                     <?php
                 }
                 ?>
             </article>
 
-			<article class="profils">
+            <article class="profils">
 				<h2>Liste des réalisateurs</h2>
 
                 <?php
                     foreach (Director::getAllDirectors() as $director) {
                 ?>
                         <figure>
-                                <a href="<?= 'person/infoDirector.php?id=' . $director->getId() ?>">
-                                    <figcaption><?= $director->getFirstname() . ' ' . $director->getLastname()?></figcaption>
-                        <img src="<?= $director->getPath() ?>" alt="" />
-                        </a>
+                            <a href="<?= 'person/infoDirector.php?id=' . $director->getId() ?>">
+                                <figcaption><?= $director->getFirstname() . ' ' . $director->getLastname()?></figcaption>
+                                <img src="<?= $director->getPath() ?>" alt="" />
+                            </a>
                         </figure>
                 <?php
                     }

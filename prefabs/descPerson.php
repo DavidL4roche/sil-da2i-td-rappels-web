@@ -4,14 +4,14 @@
 ?>
 
 <article>
-    <h1><?php echo $actor['firstname'] . ' ' . $actor['lastname'] ?></h1>
-    <p><time>Né le <?php echo date('d/m/Y', strtotime($actor['birthDate'])); ?></time><p>
-        <img src="<?= $actor['path'] ?>" alt="" />
+    <h1><?php echo $actor->getFirstName() . ' ' . $actor->getLastname() ?></h1>
+    <p><time>Né le <?php echo date('d/m/Y', strtotime($actor->getBirthDate())); ?></time><p>
+        <img src="<?= $actor->getPath() ?>" alt="" />
 </article>
 
 <article>
     <h2>Biographie</h2>
-    <p><?php echo $actor['biography'] ?></p>
+    <p><?php echo $actor->getBiography() ?></p>
 </article>
 
 <article>
