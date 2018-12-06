@@ -3,6 +3,8 @@
 // Accès à la BD
 require_once ROOTPATH . '/config/functions.php';
 
+require_once '../person/director.php';
+
 class Movie {
 
     private $id;
@@ -101,5 +103,59 @@ class Movie {
         $poster = $movie['path'];
 
         return $poster;
+    }
+
+    // Retourne le directeur d'un film
+    public static function getDirectorByMovieId($id) {
+        $directorQuery = getDatabase()->prepare('SELECT *
+                                                            FROM person, movieHasPerson, personHasPicture, picture
+                                                            WHERE person.id = movieHasPerson.idPerson
+                                                            AND movieHasPerson.role = "director"
+                                                            AND person.id = personHasPicture.idPerson
+                                                            AND personHasPicture.idPicture = picture.id
+                                                            AND movieHasPerson.idMovie ='.$id);
+        $directorQuery->execute();
+        $directorFetch = $directorQuery->fetch();
+
+        // Création du directeur
+        $director =  $movie = new Director($directorFetch["idPerson"], $directorFetch["lastname"], $directorFetch["firstname"], $directorFetch["birthDate"], $directorFetch["biography"], $directorFetch["path"]);
+
+        return $director;
+    }
+
+    // Retourne les acteurs d'un film
+    public static function getActorsByMovieId($id) {
+        // Tableau des acteurs
+        $actors = array();
+
+        $actorsQuery = getDatabase()->prepare('SELECT *
+                                                             FROM person, movieHasPerson, personHasPicture, picture
+                                                             WHERE person.id = movieHasPerson.idPerson 
+                                                             AND movieHasPerson.role = "actor"
+                                                             AND person.id = personHasPicture.idPerson
+                                                             AND personHasPicture.idPicture = picture.id 
+                                                             AND movieHasPerson.idMovie ='.$id);
+        $actorsQuery->execute();
+        while ($real = $actorsQuery->fetch()) {
+            array_push($actors, new Actor($real['idPerson'], $real['lastname'], $real['firstname'], $real['birthDate'], $real['biography'], $real['path']));
+        }
+        return $actors;
+    }
+
+    // Retourne les images du film
+    public static function getPicturesByMovieId($id) {
+        // Tableau des images
+        $pictures = array();
+
+        $picturesQuery = getDatabase()->prepare('SELECT *
+                                                              FROM movieHasPicture, picture
+                                                              WHERE movieHasPicture.idPicture = picture.id
+                                                              AND movieHasPicture.type = "poster"
+                                                              AND movieHasPicture.idMovie ='.$id);
+        $picturesQuery->execute();
+        while ($path = $picturesQuery->fetch()) {
+            array_push($pictures, $path['path']);
+        }
+        return $pictures;
     }
 }
