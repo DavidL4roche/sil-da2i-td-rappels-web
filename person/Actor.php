@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Person.php';
+require_once ROOTPATH . '/movie/movie.php';
 
 // Accès à la BD
 require_once ROOTPATH . '/config/functions.php';
@@ -39,5 +40,26 @@ class Actor extends Person {
 
         $actor = new Actor($actorFetch["idPerson"], $actorFetch["lastname"], $actorFetch["firstname"], $actorFetch["birthDate"], $actorFetch["biography"], $actorFetch["path"]);
         return $actor;
+    }
+
+    // Renvoie tout les films dans lesquels l'acteur a joué
+    public static function getMoviesByActorId($idActor) {
+
+        // Tableau des films
+        $movies = array();
+
+        $moviesQuery = getDatabase()->prepare('SELECT * 
+                                                 FROM person, movieHasPerson, movie 
+                                                 WHERE person.id ='.$idActor.' 
+                                                 AND person.id = movieHasPerson.idPerson 
+                                                 AND movieHasPerson.idMovie = movie.id
+                                                 ORDER BY movie.releaseDate DESC');
+        $moviesQuery->execute(array($idActor));
+
+        while ($real = $moviesQuery->fetch()) {
+            array_push($movies, new Movie($real['idMovie'], $real['title'], $real['releaseDate'], $real['synopsis'], $real['rating'], null));
+        }
+
+        return $movies;
     }
 }

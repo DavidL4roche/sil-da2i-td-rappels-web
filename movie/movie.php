@@ -3,8 +3,6 @@
 // Accès à la BD
 require_once ROOTPATH . '/config/functions.php';
 
-require_once '../person/director.php';
-
 class Movie {
 
     private $id;

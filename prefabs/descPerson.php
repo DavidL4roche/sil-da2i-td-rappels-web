@@ -20,11 +20,11 @@
     <h4>Longs métrages</h4>
     <ul>
         <?php
-            while ($movie = $movies->fetch()) {
+            foreach ($movies as $movie) {
                 ?>
                 <figure>
-                    <a href="../movie/infoMovie.php?id=<?= $movie['id'] ?>">
-                        <li><?php echo date('Y', strtotime($movie['releaseDate'])) . ' : ' . $movie['title']; ?></li>
+                    <a href="../movie/infoMovie.php?id=<?= $movie->getId() ?>">
+                        <li><?php echo date('Y', strtotime($movie->getReleaseDate())) . ' : ' . $movie->getTitle(); ?></li>
                     </a>
                 </figure>
                 <?php

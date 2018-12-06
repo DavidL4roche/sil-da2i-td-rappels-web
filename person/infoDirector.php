@@ -1,6 +1,7 @@
 <?php
 require '../config/functions.php';
 require_once 'director.php';
+require_once 'Person.php';
 ?>
 
 <!DOCTYPE html>
@@ -23,15 +24,9 @@ require_once 'director.php';
 <main>
     <section>
         <?php
-        $moviesQuery = $database->prepare('SELECT * 
-                                                 FROM person, movieHasPerson, movie 
-                                                 WHERE person.id = ?
-                                                 AND person.id = movieHasPerson.idPerson 
-                                                 AND movieHasPerson.idMovie = movie.id
-                                                 ORDER BY movie.releaseDate');
-        $moviesQuery->execute(array($idDirector));
+        $movies = Person::getMoviesByPersonId($idDirector);
 
-        $data = array($director, $moviesQuery);
+        $data = array($director, $movies);
 
         getBlock('prefabs/descPerson', $data);
         ?>
