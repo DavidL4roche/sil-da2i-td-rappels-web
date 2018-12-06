@@ -1,7 +1,13 @@
 @charset "UTF-8";
 
+html, body {
+	height: 100%;
+	margin: 0; padding: 0;
+}
+
 body {
-	margin: 0;
+	display : table;
+	width: 100%;
 	font-family: 'Roboto', sans-serif;
 }
 
@@ -97,11 +103,11 @@ main {
 	.sectionHeader {
 		height: 160px;
 	}
-	
+
 	.texteTopHeader h1 {
 		font-size: 35px;
 	}
-	
+
 	.texteTopHeader p {
 		font-size: 13px;
 	}
@@ -126,9 +132,30 @@ main {
 	width: 150px;
 	display: inline-block;
 	margin: 10px;
+	overflow: hidden;
 }
 
 .profils figcaption {
+	position: absolute;
+	bottom: 4px;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	background-color: white;
+	opacity: 0.75;
+	color: black;
+	text-align: center;
+}
+
+.profilsMovies figure {
+	position: relative;
+	width: 160px;
+	display: inline-block;
+	margin: 10px;
+	overflow: hidden;
+}
+
+.profilsMovies figcaption {
 	position: absolute;
 	bottom: 4px;
 	width: 100%;
@@ -149,10 +176,25 @@ main {
 	display: inline-block;
 }
 
+.movieList {
+	background-color: #E8EBED;
+	padding: 10px;
+	height: 20px;
+	line-height: 20px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+}
+
+.movieListA {
+	text-decoration: none;
+	color: black;
+}
+
 footer {
+	display : table-row;
 	width: 100%;
-	height: 40px;
-	line-height: 40px;
+	height: 20px;
+	line-height: 20px;
 	background-color: #EDEDED;
 	text-align: center;
 }

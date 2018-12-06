@@ -1,5 +1,8 @@
 <?php
-    require 'prefabs/config.php';
+    require_once 'config/functions.php';
+    require_once 'movie/movie.php';
+    require_once 'person/director.php';
+    require_once 'person/actor.php';
 ?>
 
 <!DOCTYPE html>
@@ -9,18 +12,18 @@
     <title>SensCritik</title>
     <link rel="stylesheet" href="style/style.css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" href="<?= ROOTURL ?>/img/origami.png" />
 </head>
 
 <body>
     <header>
-        <a href="http://davidlaroche.alwaysdata.net/SensCritik/index.php"><img src="img/origami.png" alt=""/></a>
-        <a href="http://davidlaroche.alwaysdata.net/SensCritik/index.php"><h1>SensCritik</h1></a>
+        <a href="<?= ROOTURL ?>/index.php"><img src="img/origami.png" alt=""/></a>
+        <a href="<?= ROOTURL ?>/index.php"><h1>SensCritik</h1></a>
         <nav>
             <ul>
-                <li><a href="http://davidlaroche.alwaysdata.net/SensCritik/movie/movie.php?id=1">Film</a></li>
-                <li><a href="http://davidlaroche.alwaysdata.net/SensCritik/actor/actor.php">Acteurs</a></li>
-                <li><a href="http://davidlaroche.alwaysdata.net/SensCritik/director/director.php">Directeurs</a></li>
+                <li><a href="<?= ROOTURL ?>/movie/movies.php">Films</a></li>
+                <li><a href="<?= ROOTURL ?>/person/actors.php">Acteurs</a></li>
+                <li><a href="<?= ROOTURL ?>/person/directors.php">Directeurs</a></li>
             </ul>
         </nav>
     </header>
@@ -32,43 +35,50 @@
                 <p>SensCritik est un service gratuit qui vous permet de découvrir, noter et classer des films.</p>
 			</article>
 
-			<article class="profils">
-				<h2>Liste des réalisateurs</h2>
+            <article class="profilsMovies">
+                <h2>Liste des films</h2>
+
                 <?php
-                $realQuery = $database->prepare('SELECT DISTINCT movieHasPerson.idPerson, person.firstname, person.lastname, picture.path
-                                                            FROM person, movieHasPerson, personHasPicture, picture
-                                                            WHERE person.id = movieHasPerson.idPerson
-									                        AND movieHasPerson.role = "director"
-									                        AND person.id = personHasPicture.idPerson
-									                        AND personHasPicture.idPicture = picture.id');
-                $realQuery->execute();
-                while ($real = $realQuery->fetch()) {
+                foreach (Movie::getAllMovies() as $movie) {
                     ?>
                     <figure>
-                        <a href="<?php echo 'director/infoDirector.php?id=' . $real['idPerson'] ?>">
-                            <figcaption><?php echo $real['firstname'] . ' ' . $real['lastname']?></figcaption>
-                            <img src="<?php echo $real['path']; ?>" alt="" />
+                        <a href="<?= 'movie/infoMovie.php?id=' . $movie->getId() ?>">
+                            <?php
+                                $path = Movie::getPoster($movie->getId());
+                            ?>
+                            <img src="<?= $path ?>" alt="" />
                         </a>
                     </figure>
                     <?php
                 }
                 ?>
+            </article>
+
+            <article class="profils">
+				<h2>Liste des réalisateurs</h2>
+
+                <?php
+                    foreach (Director::getAllDirectors() as $director) {
+                ?>
+                        <figure>
+                            <a href="<?= 'person/infoDirector.php?id=' . $director->getId() ?>">
+                                <figcaption><?= $director->getFirstname() . ' ' . $director->getLastname()?></figcaption>
+                                <img src="<?= $director->getPath() ?>" alt="" />
+                            </a>
+                        </figure>
+                <?php
+                    }
+                ?>
 
 				<h2>Liste des acteurs</h2>
+
                 <?php
-                $actorsQuery = $database->prepare('SELECT DISTINCT movieHasPerson.idPerson, person.firstname, person.lastname, picture.path
-                                                              FROM person, movieHasPerson, personHasPicture, picture
-                                                              WHERE person.id = movieHasPerson.idPerson
-                                                              AND movieHasPerson.role = "actor"
-                                                              AND person.id = personHasPicture.idPerson
-                                                              AND personHasPicture.idPicture = picture.id');
-                $actorsQuery->execute();
-                while ($actor = $actorsQuery->fetch()) {
+                foreach (Actor::getAllActors() as $actor) {
                     ?>
                     <figure>
-                        <a href="<?php echo 'actor/infoActor.php?id=' . $actor['idPerson'] ?>">
-                            <figcaption><?php echo $actor['firstname'] . ' ' . $actor['lastname']?></figcaption>
-                            <img src="<?php echo $actor['path']; ?>" alt="" />
+                        <a href="<?= 'person/infoActor.php?id=' . $actor->getId() ?>">
+                            <figcaption><?= $actor->getFirstname() . ' ' . $actor->getLastname()?></figcaption>
+                            <img src="<?= $actor->getPath() ?>" alt="" />
                         </a>
                     </figure>
                     <?php
@@ -79,7 +89,7 @@
 	</main>
 
     <?php
-        getBlock('footer');
+        getBlock('prefabs/footer');
     ?>
 
 </body>
