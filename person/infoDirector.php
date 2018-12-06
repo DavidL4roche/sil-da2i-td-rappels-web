@@ -1,43 +1,34 @@
 <?php
 require '../config/functions.php';
+require_once 'director.php';
+require_once 'Person.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <?php
-    getBlock('prefabs/head');
+        getBlock('prefabs/head');
     ?>
 </head>
 <body>
 
 <?php
-getBlock('prefabs/header');
+    getBlock('prefabs/header');
 
-$idActor = filter_input(INPUT_GET, 'id');
-$actorQuery = $database->prepare('SELECT * 
-                                                 FROM person, personHasPicture, picture 
-                                                 WHERE person.id = ?
-                                                 AND person.id = personHasPicture.idPerson 
-                                                 AND personHasPicture.idPicture = picture.id');
-$actorQuery->execute(array($idActor));
-$actor = $actorQuery->fetch();
+    $idDirector = filter_input(INPUT_GET, 'id');
+
+    $director = Director::getDirectorById($idDirector);
 ?>
 
 <main>
     <section>
         <?php
-        $moviesQuery = $database->prepare('SELECT * 
-                                                 FROM person, movieHasPerson, movie 
-                                                 WHERE person.id = ?
-                                                 AND person.id = movieHasPerson.idPerson 
-                                                 AND movieHasPerson.idMovie = movie.id
-                                                 ORDER BY movie.releaseDate');
-        $moviesQuery->execute(array($idActor));
+        $movies = Person::getMoviesByPersonId($idDirector);
 
-        $data = array($actor, $moviesQuery);
+        $data = array($director, $movies);
 
-        getBlock('prefabs/descActor', $data);
+        getBlock('prefabs/descPerson', $data);
         ?>
 
     </section>

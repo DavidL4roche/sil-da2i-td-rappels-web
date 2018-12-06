@@ -132,9 +132,30 @@ main {
 	width: 150px;
 	display: inline-block;
 	margin: 10px;
+	overflow: hidden;
 }
 
 .profils figcaption {
+	position: absolute;
+	bottom: 4px;
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	background-color: white;
+	opacity: 0.75;
+	color: black;
+	text-align: center;
+}
+
+.profilsMovies figure {
+	position: relative;
+	width: 160px;
+	display: inline-block;
+	margin: 10px;
+	overflow: hidden;
+}
+
+.profilsMovies figcaption {
 	position: absolute;
 	bottom: 4px;
 	width: 100%;

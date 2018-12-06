@@ -1,41 +1,15 @@
 <?php
     require '../config/functions.php';
-    require_once  'Movie.php';
+    require_once  'movie.php';
+    require_once '../person/director.php';
+    require_once '../person/actor.php';
 
     $idMovie = filter_input(INPUT_GET, 'id');
 
     $movie = Movie::getBaseInfos($idMovie);
-
-    /*
-    $movieQuery = $database->prepare('SELECT * 
-                                                 FROM movie, movieHasPicture, picture
-                                                 WHERE movie.id = ?
-                                                 AND movie.id = movieHasPicture.idMovie
-                                                 AND movieHasPicture.idPicture = picture.id
-                                                 AND movieHasPicture.type = "gallery"');
-    $movieQuery->execute(array($idMovie));
-    $movie = $movieQuery->fetch();
-    */
-
-    $directorQuery = $database->prepare('SELECT * 
-                                                    FROM movieHasPerson, person
-                                                    WHERE movieHasPerson.idPerson = person.id
-                                                    AND movieHasPerson.idMovie = ?
-                                                    AND movieHasPerson.role = "director"');
-    $directorQuery->execute(array($idMovie));
-    $director = $directorQuery->fetch();
-
-    $actorQuery = $database->prepare('SELECT *
-                                                  FROM movieHasPerson, person
-                                                  WHERE movieHasPerson.idPerson = person.id
-                                                  AND movieHasPerson.idMovie = ?
-                                                  AND movieHasPerson.role = "actor"');
-    $actorQuery->execute(array($idMovie));
-    //$actors = $actorsQuery->fetch();
-
-    //$actors
-
-    //$images
+    $director = Movie::getDirectorByMovieId($idMovie);
+    $actors = Movie::getActorsByMovieId($idMovie);
+    $pictures = Movie::getPicturesByMovieId($idMovie);
 ?>
 
 <!DOCTYPE html>
@@ -54,13 +28,13 @@
 	<main>
 		<section>
 			<article>
-				<p class="desc1">Film de <a class="presDirector" href="../person/infoDirector.php?id=<?= $director['idPerson'] ?>"><?= $director['firstname'] . ' '
-                         . $director['lastname']?></a> - <?= date('d/m/Y', strtotime($movie->getReleaseDate()))?></p>
+				<p class="desc1">Film de <a class="presDirector" href="../person/infoDirector.php?id=<?= $director->getId() ?>"><?= $director->getFirstname() . ' '
+                         . $director->getLastname()?></a> - <?= date('d/m/Y', strtotime($movie->getReleaseDate()))?></p>
 				<p>Avec
                     <?php
-                        while ($actor = $actorQuery->fetch()) {
+                        foreach ($actors as $actor) {
                             ?>
-                            <a class="presActor" href="../person/infoActor.php?id=<?= $actor['idPerson'] ?>"><?= $actor['firstname'] . ' ' . $actor['lastname'] ?></a>,
+                            <a class="presActor" href="../person/infoActor.php?id=<?= $actor->getId() ?>"><?= $actor->getFirstname() . ' ' . $actor->getLastname() ?></a>,
                             <?php
                         }
                     ?>
@@ -74,21 +48,10 @@
 			<article class="profils">
 				<h2>Réalisateur</h2>
 
-                <?php
-                $realQuery = $database->prepare('SELECT *
-                                                            FROM person, movieHasPerson, personHasPicture, picture
-                                                            WHERE person.id = movieHasPerson.idPerson
-                                                            AND movieHasPerson.idMovie = ?
-                                                            AND movieHasPerson.role = "director"
-                                                            AND person.id = personHasPicture.idPerson
-                                                            AND personHasPicture.idPicture = picture.id');
-                $realQuery->execute(array($idMovie));
-                $real = $realQuery->fetch()
-                ?>
                 <figure>
-                    <a href="<?php echo '../person/infoDirector.php?id=' . $real['idPerson'] ?>">
-                        <figcaption><?php echo $real['firstname'] . ' ' . $real['lastname']?></figcaption>
-                        <img src="<?php echo $real['path']; ?>" alt="" />
+                    <a href="<?php echo '../person/infoDirector.php?id=' .$director->getId() ?>">
+                        <figcaption><?php echo $director->getFirstname() . ' ' . $director->getLastname()?></figcaption>
+                        <img src="<?php echo $director->getPath(); ?>" alt="" />
                     </a>
                 </figure>
                 <?php
@@ -96,20 +59,12 @@
 
 				<h2>Casting : Acteurs principaux</h2>
                 <?php
-                $actorsQuery = $database->prepare('SELECT *
-                                                                  FROM person, movieHasPerson, personHasPicture, picture
-                                                                  WHERE person.id = movieHasPerson.idPerson
-                                                                  AND movieHasPerson.idMovie = ?
-									                              AND movieHasPerson.role = "actor"
-									                              AND person.id = personHasPicture.idPerson
-									                              AND personHasPicture.idPicture = picture.id');
-                $actorsQuery->execute(array($idMovie));
-                while ($actor = $actorsQuery->fetch()) {
+                foreach ($actors as $actor) {
                     ?>
                     <figure>
-                        <a href="<?php echo '../person/infoActor.php?id=' . $actor['idPerson'] ?>">
-                            <figcaption><?php echo $actor['firstname'] . ' ' . $actor['lastname']?></figcaption>
-                            <img src="<?php echo $actor['path']; ?>" alt="" />
+                        <a href="<?php echo '../person/infoActor.php?id=' . $actor->getId() ?>">
+                            <figcaption><?php echo $actor->getFirstname() . ' ' . $actor->getLastname()?></figcaption>
+                            <img src="<?php echo $actor->getPath(); ?>" alt="" />
                         </a>
                     </figure>
                     <?php
@@ -128,22 +83,16 @@
 			</aside>
 			-->
 
-			<aside class="imagesFilm">
-				<h2>Images</h2>
+            <aside class="imagesFilm">
+                <h2>Images</h2>
                 <?php
-                $imagesQuery = $database->prepare('SELECT *
-                                                              FROM movieHasPicture, picture
-                                                              WHERE movieHasPicture.idPicture = picture.id
-                                                              AND movieHasPicture.idMovie = ?
-                                                              AND movieHasPicture.type = "poster"');
-                $imagesQuery->execute(array($idMovie));
-                while ($image = $imagesQuery->fetch()) {
+                foreach ($pictures as $picture) {
                     ?>
-                    <img src="<?= $image['path'] ?>" alt="" />
+                    <img src="<?= $picture ?>" alt="" />
                     <?php
                 }
                 ?>
-			</aside>
+            </aside>
 		</section>
 	</main>
 	
