@@ -1,7 +1,5 @@
 <?php
 
-require_once ROOTPATH . '/movie/movie.php';
-
 abstract class Person {
 
     private $id;

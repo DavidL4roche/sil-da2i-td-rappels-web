@@ -1,7 +1,5 @@
 <?php
-
-require '../config/functions.php';
-require_once 'actor.php';
+    $actors = $data[0]
 ?>
 
     <!DOCTYPE html>
@@ -24,12 +22,19 @@ getBlock('prefabs/header');
             <h2>Liste des acteurs</h2>
 
             <?php
-            foreach (Actor::getAllActors() as $actor) {
+            foreach ($actors as $actor) {
                 ?>
                 <figure>
-                    <a href="<?= 'infoActor.php?id=' . $actor->getId() ?>">
+                    <a href="<?= 'actor/' . $actor->getId() ?>">
                         <figcaption><?= $actor->getFirstname() . ' ' . $actor->getLastname()?></figcaption>
-                        <img src="<?= $actor->getPath() ?>" alt="" />
+                        <?php
+                        if($actor->getPath() != null) {
+                            echo "<img src=\"" . $actor->getPath() . "\" alt=\"\" />";
+                        }
+                        else {
+                            echo "<img src=\"https://media.senscritique.com/missing/212/150_200/missing.jpg\" alt=\"\" />";
+                        }
+                        ?>
                     </a>
                 </figure>
                 <?php

@@ -1,7 +1,5 @@
 <?php
-
-require '../config/functions.php';
-require_once 'movie.php';
+    $movies = $data[0];
 ?>
 
 <!DOCTYPE html>
@@ -23,10 +21,10 @@ getBlock('prefabs/header');
             <h2>Liste des films</h2>
 
             <?php
-            foreach (Movie::getAllMovies() as $movie) {
+            foreach ($movies as $movie) {
                 ?>
                 <figure>
-                    <a href="<?= 'infoMovie.php?id=' . $movie->getId() ?>">
+                    <a href="<?= ROOTURL . '/movie/' . $movie->getId() ?>">
                         <?php
                         $path = Movie::getPoster($movie->getId());
                         ?>

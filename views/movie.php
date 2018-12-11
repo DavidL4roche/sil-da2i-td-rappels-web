@@ -1,15 +1,11 @@
 <?php
-    require '../config/functions.php';
-    require_once  'movie.php';
-    require_once '../person/director.php';
-    require_once '../person/actor.php';
 
     $idMovie = filter_input(INPUT_GET, 'id');
 
-    $movie = Movie::getBaseInfos($idMovie);
-    $director = Movie::getDirectorByMovieId($idMovie);
-    $actors = Movie::getActorsByMovieId($idMovie);
-    $pictures = Movie::getPicturesByMovieId($idMovie);
+    $movie = $data[1];
+    $director = $data[2];
+    $actors = $data[3];
+    $pictures = $data[4];
 ?>
 
 <!DOCTYPE html>
@@ -28,13 +24,13 @@
 	<main>
 		<section>
 			<article>
-				<p class="desc1">Film de <a class="presDirector" href="../person/infoDirector.php?id=<?= $director->getId() ?>"><?= $director->getFirstname() . ' '
+				<p class="desc1">Film de <a class="presDirector" href="<?= ROOTURL ?>/director/<?= $director->getId() ?>"><?= $director->getFirstname() . ' '
                          . $director->getLastname()?></a> - <?= date('d/m/Y', strtotime($movie->getReleaseDate()))?></p>
 				<p>Avec
                     <?php
                         foreach ($actors as $actor) {
                             ?>
-                            <a class="presActor" href="../person/infoActor.php?id=<?= $actor->getId() ?>"><?= $actor->getFirstname() . ' ' . $actor->getLastname() ?></a>,
+                            <a class="presActor" href="<?= ROOTURL ?>/actor/<?= $actor->getId() ?>"><?= $actor->getFirstname() . ' ' . $actor->getLastname() ?></a>,
                             <?php
                         }
                     ?>
@@ -49,7 +45,7 @@
 				<h2>Réalisateur</h2>
 
                 <figure>
-                    <a href="<?php echo '../person/infoDirector.php?id=' .$director->getId() ?>">
+                    <a href="<?php echo ROOTURL . '/director/' .$director->getId() ?>">
                         <figcaption><?php echo $director->getFirstname() . ' ' . $director->getLastname()?></figcaption>
                         <img src="<?php echo $director->getPath(); ?>" alt="" />
                     </a>
@@ -62,7 +58,7 @@
                 foreach ($actors as $actor) {
                     ?>
                     <figure>
-                        <a href="<?php echo '../person/infoActor.php?id=' . $actor->getId() ?>">
+                        <a href="<?php echo ROOTURL . '/actor/' . $actor->getId() ?>">
                             <figcaption><?php echo $actor->getFirstname() . ' ' . $actor->getLastname()?></figcaption>
                             <img src="<?php echo $actor->getPath(); ?>" alt="" />
                         </a>

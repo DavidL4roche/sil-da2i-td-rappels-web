@@ -2,7 +2,8 @@
 
 html, body {
 	height: 100%;
-	margin: 0; padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 body {
@@ -176,6 +177,47 @@ main {
 	display: inline-block;
 }
 
+.headerPerson {
+	background-color: #20222c;
+	width: 100%;
+	color: white;
+	display: block;
+}
+
+.corpsHeaderPerson {
+	display: block;
+	padding: 50px 25px 50px 25px;
+	margin: auto;
+	width: 60%;
+}
+
+.headerPerson section h1 {
+	margin: 0;
+}
+
+.headerPerson p {
+	margin: 0;
+}
+
+.imgActeur {
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 5px;
+	border: 2px solid rgba(255,255,255,.15);
+	margin-right: 30px;
+}
+
+.infosActeur {
+	display: inline-block;
+	vertical-align: middle;
+	/*width: calc(100% - 190px);*/
+}
+
+.infosActeur h1 {
+	font-size: 56px;
+	margin: 0 0 10px 0;
+}
+
 .movieList {
 	background-color: #E8EBED;
 	padding: 10px;
@@ -188,6 +230,30 @@ main {
 .movieListA {
 	text-decoration: none;
 	color: black;
+}
+
+dt {
+	background-color: #EDEDED;
+	width: 100%;
+	padding: 5px;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+dd {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.clics {
+	color: grey;
+	float: right;
+}
+
+#reduireFAQ {
+	color: grey;
+	cursor: pointer
 }
 
 footer {

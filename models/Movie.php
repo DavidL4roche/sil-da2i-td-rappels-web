@@ -1,8 +1,5 @@
 <?php
 
-// Accès à la BD
-require_once ROOTPATH . '/config/functions.php';
-
 class Movie {
 
     private $id;
@@ -62,7 +59,7 @@ class Movie {
         // Tableau des films
         $movies = array();
 
-        $realQuery = getDatabase()->prepare('SELECT * FROM movie');
+        $realQuery = getDatabase()->prepare('SELECT * FROM movie ORDER BY releaseDate DESC');
         $realQuery->execute();
         while ($real = $realQuery->fetch()) {
             array_push($movies, new Movie($real['id'], $real['title'], $real['releaseDate'], $real['synopsis'], $real['rating'], null));
