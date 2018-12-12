@@ -6,6 +6,7 @@
     $director = $data[2];
     $actors = $data[3];
     $pictures = $data[4];
+    $background = $data[5];
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
 
     <?php
         getBlock('prefabs/header');
-        getBlock('prefabs/bannerMovie', $movie);
+        getBlock('prefabs/bannerMovie', [$movie, $background]);
     ?>
 
 	<main>

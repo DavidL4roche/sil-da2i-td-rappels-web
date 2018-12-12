@@ -13,7 +13,8 @@ class MovieController {
         $director = Movie::getDirectorByMovieId($idMovie);
         $actors = Movie::getActorsByMovieId($idMovie);
         $pictures = Movie::getPicturesByMovieId($idMovie);
+        $background = Image::getMovieWallpaper($idMovie, "gallery");
 
-        getBlock('views/movie', [$idMovie, $movie, $director, $actors, $pictures]);
+        getBlock('views/movie', [$idMovie, $movie, $director, $actors, $pictures, $background]);
     }
 }

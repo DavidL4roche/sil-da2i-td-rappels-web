@@ -66,17 +66,14 @@ class Movie {
 
     public static function getBaseInfos($id) {
 
-        $realQuery = getDatabase()->prepare('SELECT idMovie, title, releaseDate, synopsis, rating, path
-                                                       FROM movie, movieHasPicture, picture
-                                                       WHERE movie.id = movieHasPicture.idMovie
-                                                       AND movieHasPicture.idPicture = picture.id
-                                                       AND movieHasPicture.type = "gallery" 
-                                                       AND movie.id='.$id);
+        $realQuery = getDatabase()->prepare('SELECT id, title, releaseDate, synopsis, rating
+                                                       FROM movie
+                                                       WHERE movie.id='.$id);
         $realQuery->execute();
         $real = $realQuery->fetch();
 
         // Film
-        $movie = new Movie($real['idMovie'], $real['title'], $real['releaseDate'], $real['synopsis'], $real['rating'], $real['path']);
+        $movie = new Movie($real['id'], $real['title'], $real['releaseDate'], $real['synopsis'], $real['rating'], null);
 
         return $movie;
     }
