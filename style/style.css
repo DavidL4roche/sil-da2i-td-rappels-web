@@ -256,6 +256,63 @@ dd {
 	cursor: pointer
 }
 
+#titleSup {
+	color: red;
+}
+
+#titleAjout {
+	color: green;
+}
+
+#titleLiaison {
+	color: blue;
+}
+
+table th, table td {
+	height: 50px;
+	border: 1px solid black;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.btnGestion {
+	width: 80%;
+	margin: auto;
+	text-align: center;
+}
+
+.btnAjouter {
+	width: 80%;
+	margin: auto;
+	text-align: center;
+}
+
+.btnAjouter input {
+	color: green;
+}
+
+.btnGestion input {
+	color: red;
+}
+
+.btnLiaison {
+	width: 80%;
+	margin: auto;
+	text-align: center;
+}
+
+.btnLiaison input {
+	color: blue;
+}
+
+.photoPerson {
+	width: 150px;
+	height: 200px;
+}
+
 footer {
 	display : table-row;
 	width: 100%;

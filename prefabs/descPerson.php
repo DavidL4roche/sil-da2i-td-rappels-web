@@ -7,7 +7,7 @@
     <div class="corpsHeaderPerson">
         <?php
             if($actor->getPath() != null) {
-                echo "<img class=\"imgActeur\" src=" . $actor->getPath() . " alt=\"\" />";
+                echo "<img class=\"imgActeur photoPerson\" src=" . $actor->getPath() . " alt=\"\" />";
             }
             else {
                 echo "<img class=\"imgActeur\" src=\"https://media.senscritique.com/missing/212/150_200/missing.jpg\" alt=\"\" />";

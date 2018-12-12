@@ -12,6 +12,8 @@
     </nav>
 </header>
 
+<!--
 <button id="hideAside">Hide Aside</button>
 <button id="fadeImg">Fade Image</button>
 <button id="toggleMenu">Toggle Menu</button>
+-->

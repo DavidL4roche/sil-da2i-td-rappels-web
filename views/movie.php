@@ -47,7 +47,14 @@
                 <figure>
                     <a href="<?php echo ROOTURL . '/director/' .$director->getId() ?>">
                         <figcaption><?php echo $director->getFirstname() . ' ' . $director->getLastname()?></figcaption>
-                        <img src="<?php echo $director->getPath(); ?>" alt="" />
+                        <?php
+                        if($director->getPath() != null) {
+                            echo "<img class=\"photoPerson\" src=\"" . $director->getPath() . "\" alt=\"\" />";
+                        }
+                        else {
+                            echo "<img class=\"photoPerson\" src=\"https://media.senscritique.com/missing/212/150_200/missing.jpg\" alt=\"\" />";
+                        }
+                        ?>
                     </a>
                 </figure>
                 <?php
@@ -60,7 +67,14 @@
                     <figure>
                         <a href="<?php echo ROOTURL . '/actor/' . $actor->getId() ?>">
                             <figcaption><?php echo $actor->getFirstname() . ' ' . $actor->getLastname()?></figcaption>
-                            <img src="<?php echo $actor->getPath(); ?>" alt="" />
+                            <?php
+                            if($actor->getPath() != null) {
+                                echo "<img class=\"photoPerson\" src=\"" . $actor->getPath() . "\" alt=\"\" />";
+                            }
+                            else {
+                                echo "<img class=\"photoPerson\" src=\"https://media.senscritique.com/missing/212/150_200/missing.jpg\" alt=\"\" />";
+                            }
+                            ?>
                         </a>
                     </figure>
                     <?php

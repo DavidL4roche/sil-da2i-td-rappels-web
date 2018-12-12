@@ -14,6 +14,7 @@ require ROOTPATH . '/models/Person.php';
 require ROOTPATH . '/models/Actor.php';
 require ROOTPATH . '/models/Director.php';
 require ROOTPATH . '/models/Movie.php';
+require ROOTPATH . '/models/Image.php';
 
 require ROOTPATH . '/controllers/ActorController.php';
 require ROOTPATH . '/controllers/DirectorController.php';

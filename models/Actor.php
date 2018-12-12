@@ -8,8 +8,10 @@ class Actor extends Person {
         // Tableau des acteurs
         $actors = array();
 
-        $actorsQuery = getDatabase()->prepare('SELECT *
-                                                          FROM person');
+        $actorsQuery = getDatabase()->prepare('SELECT P.*
+                                                          FROM movieHasPerson
+                                                          LEFT JOIN person as P ON P.id=movieHasPerson.idPerson
+                                                          WHERE  movieHasPerson.role = "actor"');
         $actorsQuery->execute();
         while ($real = $actorsQuery->fetch()) {
             array_push($actors, new Actor($real['id'], $real['lastname'], $real['firstname'], $real['birthDate'], $real['biography'], null));
@@ -40,7 +42,7 @@ class Actor extends Person {
     // Renvoie un acteur par son identifiant
     public static function getActorById($idActor) {
 
-        $actorQuery = getDatabase()->prepare('SELECT  person.*, PT.path
+        $actorQuery = getDatabase()->prepare('SELECT person.*, PT.path
                                                  FROM person
                                                  LEFT JOIN personHasPicture AS PHP ON PHP.idPerson = person.id
                                                  LEFT JOIN picture AS PT ON PT.id = PHP.idPicture 
@@ -48,7 +50,7 @@ class Actor extends Person {
         $actorQuery->execute(array($idActor));
         $actorFetch = $actorQuery->fetch();
 
-        $actor = new Actor($actorFetch["idPerson"], $actorFetch["lastname"], $actorFetch["firstname"], $actorFetch["birthDate"], $actorFetch["biography"], $actorFetch["path"]);
+        $actor = new Actor($actorFetch["id"], $actorFetch["lastname"], $actorFetch["firstname"], $actorFetch["birthDate"], $actorFetch["biography"], $actorFetch["path"]);
         return $actor;
     }
 
@@ -71,12 +73,5 @@ class Actor extends Person {
         }
 
         return $movies;
-    }
-
-    // Supprimer un acteur
-    public static function deleteActor($idActor) {
-
-        $actorQuery = getDatabase()->prepare('DELETE FROM person WHERE id = ?');
-        $actorQuery->execute(array($idActor));
     }
 }

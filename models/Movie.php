@@ -53,9 +53,6 @@ class Movie {
     // Functions
     public static function getAllMovies() {
 
-        // Accès à la BD
-        require_once ROOTPATH . '/config/functions.php';
-
         // Tableau des films
         $movies = array();
 
@@ -102,18 +99,18 @@ class Movie {
 
     // Retourne le directeur d'un film
     public static function getDirectorByMovieId($id) {
-        $directorQuery = getDatabase()->prepare('SELECT *
-                                                            FROM person, movieHasPerson, personHasPicture, picture
-                                                            WHERE person.id = movieHasPerson.idPerson
-                                                            AND movieHasPerson.role = "director"
-                                                            AND person.id = personHasPicture.idPerson
-                                                            AND personHasPicture.idPicture = picture.id
-                                                            AND movieHasPerson.idMovie ='.$id);
+        $directorQuery = getDatabase()->prepare('SELECT person.*, PT.path
+                                                            FROM person
+                                                            LEFT JOIN movieHasPerson AS MHP ON MHP.idPerson = person.id
+                                                            LEFT JOIN personHasPicture AS PHP ON person.id = PHP.idPerson
+                                                            LEFT JOIN picture AS PT ON PT.id = PHP.idPicture
+                                                            WHERE MHP.role = "director"
+                                                            AND MHP.idMovie = '.$id);
         $directorQuery->execute();
         $directorFetch = $directorQuery->fetch();
 
         // Création du directeur
-        $director =  $movie = new Director($directorFetch["idPerson"], $directorFetch["lastname"], $directorFetch["firstname"], $directorFetch["birthDate"], $directorFetch["biography"], $directorFetch["path"]);
+        $director =  $movie = new Director($directorFetch["id"], $directorFetch["lastname"], $directorFetch["firstname"], $directorFetch["birthDate"], $directorFetch["biography"], $directorFetch["path"]);
 
         return $director;
     }
@@ -123,16 +120,16 @@ class Movie {
         // Tableau des acteurs
         $actors = array();
 
-        $actorsQuery = getDatabase()->prepare('SELECT *
-                                                             FROM person, movieHasPerson, personHasPicture, picture
-                                                             WHERE person.id = movieHasPerson.idPerson 
-                                                             AND movieHasPerson.role = "actor"
-                                                             AND person.id = personHasPicture.idPerson
-                                                             AND personHasPicture.idPicture = picture.id 
-                                                             AND movieHasPerson.idMovie ='.$id);
+        $actorsQuery = getDatabase()->prepare('SELECT person.*, PT.path
+                                                            FROM person
+                                                            LEFT JOIN movieHasPerson AS MHP ON MHP.idPerson = person.id
+                                                            LEFT JOIN personHasPicture AS PHP ON person.id = PHP.idPerson
+                                                            LEFT JOIN picture AS PT ON PT.id = PHP.idPicture
+                                                            WHERE MHP.role = "actor"
+                                                            AND MHP.idMovie = '.$id);
         $actorsQuery->execute();
         while ($real = $actorsQuery->fetch()) {
-            array_push($actors, new Actor($real['idPerson'], $real['lastname'], $real['firstname'], $real['birthDate'], $real['biography'], $real['path']));
+            array_push($actors, new Actor($real['id'], $real['lastname'], $real['firstname'], $real['birthDate'], $real['biography'], $real['path']));
         }
         return $actors;
     }
@@ -152,5 +149,33 @@ class Movie {
             array_push($pictures, $path['path']);
         }
         return $pictures;
+    }
+
+    // Supprimer un film
+    public static function deleteMovie($idMovie) {
+
+        $actorQuery = getDatabase()->prepare('DELETE FROM movie WHERE id = ?');
+        $actorQuery->execute(array($idMovie));
+    }
+
+    // Ajouter un film
+    public static function addMovie($title, $releaseDate, $synopsis, $rating) {
+        $movieQuery = getDatabase()->prepare('INSERT INTO `movie` (`title`, `releaseDate`, `synopsis`, `rating`) 
+                                                         VALUES (?, ?, ?, ?)');
+        $movieQuery->execute(array($title, $releaseDate, $synopsis, $rating));
+    }
+
+    // Lier un film à un acteur
+    public static function linkMovieToPerson($idMovie, $idPerson, $role) {
+        $movieQuery = getDatabase()->prepare('INSERT INTO `movieHasPerson` (`idMovie`, `idPerson`, `role`) 
+                                                         VALUES (?, ?, ?)');
+        $movieQuery->execute(array($idMovie, $idPerson, $role));
+    }
+
+    // Lier un film à une image
+    public static function linkMovieToImage($idMovie, $idPicture, $type) {
+        $movieQuery = getDatabase()->prepare('INSERT INTO `movieHasPicture` (`idMovie`, `idPicture`, `type`) 
+                                                         VALUES (?, ?, ?)');
+        $movieQuery->execute(array($idMovie, $idPicture, $type));
     }
 }

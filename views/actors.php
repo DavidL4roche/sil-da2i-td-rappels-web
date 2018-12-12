@@ -29,10 +29,10 @@ getBlock('prefabs/header');
                         <figcaption><?= $actor->getFirstname() . ' ' . $actor->getLastname()?></figcaption>
                         <?php
                         if($actor->getPath() != null) {
-                            echo "<img src=\"" . $actor->getPath() . "\" alt=\"\" />";
+                            echo "<img class=\"photoPerson\" src=\"" . $actor->getPath() . "\" alt=\"\" />";
                         }
                         else {
-                            echo "<img src=\"https://media.senscritique.com/missing/212/150_200/missing.jpg\" alt=\"\" />";
+                            echo "<img class=\"photoPerson\" src=\"https://media.senscritique.com/missing/212/150_200/missing.jpg\" alt=\"\" />";
                         }
                         ?>
                     </a>

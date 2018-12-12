@@ -72,4 +72,24 @@ abstract class Person {
         return $movies;
     }
 
+    // Ajouter une personne
+    public static function addPerson($lastname, $firstname, $birthDate, $biography) {
+        $personQuery = getDatabase()->prepare('INSERT INTO `person` (`lastname`, `firstname`, `birthDate`, `biography`) 
+                                                         VALUES (?, ?, ?, ?)');
+        $personQuery->execute(array($lastname, $firstname, $birthDate, $biography));
+    }
+
+    // Supprimer un acteur
+    public static function deletePerson($idActor) {
+
+        $actorQuery = getDatabase()->prepare('DELETE FROM person WHERE id = ?');
+        $actorQuery->execute(array($idActor));
+    }
+
+    // Lier une image à une personne
+    public static function linkPictureToPerson($idPicture, $idPerson) {
+        $movieQuery = getDatabase()->prepare('INSERT INTO `personHasPicture` (`idPerson`, `idPicture`) 
+                                                         VALUES (?, ?)');
+        $movieQuery->execute(array($idPerson, $idPicture));
+    }
 }

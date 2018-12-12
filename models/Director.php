@@ -39,5 +39,4 @@ class Director extends Person {
         $director = new Director($directorFetch["id"], $directorFetch["lastname"], $directorFetch["firstname"], $directorFetch["birthDate"], $directorFetch["biography"], $directorFetch["path"]);
         return $director;
     }
-
 }
